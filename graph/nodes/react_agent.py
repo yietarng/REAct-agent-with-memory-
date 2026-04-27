@@ -36,12 +36,13 @@ def react_agent_node(state: AgentState) -> AgentState:
 
 
 def _parse_hotel_results(messages) -> list:
+    import logging
     results = []
     for msg in messages:
         if isinstance(msg, ToolMessage) and msg.name == "hotel_search":
             try:
                 data = json.loads(msg.content)
                 results.extend(data.get("hotels", []))
-            except Exception:
-                pass
+            except Exception as exc:
+                logging.warning("hotel_search tool returned unparseable content: %s", exc)
     return results

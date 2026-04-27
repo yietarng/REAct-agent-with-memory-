@@ -7,6 +7,8 @@ llm = ChatAnthropic(model="claude-opus-4-5", temperature=0)
 
 
 def planner_node(state: AgentState) -> AgentState:
+    if not state.get("messages"):
+        raise ValueError("planner_node requires at least one message in state")
     user_message = state["messages"][-1].content
 
     response = llm.invoke([

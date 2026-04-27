@@ -10,9 +10,15 @@ llm = ChatAnthropic(model="claude-opus-4-5", temperature=0)
 def verifier_node(state: AgentState) -> AgentState:
     top_3 = state.get("top_3_hotels", [])
 
+    # Sanitise string fields to prevent prompt injection from API-sourced hotel data.
+    safe_top_3 = [
+        {k: (v[:500] if isinstance(v, str) else v) for k, v in h.items()}
+        for h in top_3
+    ]
+
     response = llm.invoke([
         SystemMessage(content=VERIFIER_SYSTEM),
-        HumanMessage(content=json.dumps(top_3, indent=2))
+        HumanMessage(content=json.dumps(safe_top_3, indent=2))
     ])
 
     try:
