@@ -12,7 +12,7 @@ MAX_ITERATIONS = 6
 
 tools = [hotel_search, geo_lookup, availability_check]
 llm = ChatAnthropic(model="claude-opus-4-5", temperature=0)
-react_executor = create_react_agent(llm, tools, state_modifier=REACT_SYSTEM)
+react_executor = create_react_agent(llm, tools, prompt=REACT_SYSTEM)
 
 
 def react_agent_node(state: AgentState) -> AgentState:
