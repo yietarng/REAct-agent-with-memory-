@@ -21,7 +21,7 @@ LangGraph agent that finds the 3 cheapest available hotels near Fisherman's Whar
 │                   └─────────┘                                  │
 │                                                                 │
 │   ════════════════════ MEMORY LAYER ══════════════════════      │
-│   [ SqliteSaver checkpoint ]  [ MemorySaver session store ]    │
+│              [ SqliteSaver — persistent checkpoint ]           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -49,7 +49,7 @@ planner → react_agent → ranker ──(error)──────────�
 ## File Map
 
 ```
-hotel_agent/
+./                               # repo root
 ├── CLAUDE.md
 ├── main.py                      # Entry point; streams graph execution
 ├── graph/
@@ -117,7 +117,7 @@ graph.stream(initial_state, config=config)
 | `geo_lookup(location: str)` | Place name | JSON with `lat`, `lng`, `district`, `city` |
 | `availability_check(hotel_name, check_in, check_out)` | Hotel + ISO dates | JSON with `available`, `rooms_left` |
 
-All three are `@tool`-decorated LangChain callables. Mock responses are included for development; swap in real API calls (SerpAPI Hotels, Amadeus, etc.) behind the same interface.
+All three are `@tool`-decorated LangChain callables in separate files — one tool per file so each API integration can be swapped independently. Mock responses are included for development.
 
 ## Key Constraints
 
