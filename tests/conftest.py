@@ -6,6 +6,10 @@ def env_vars(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
 
 
+# ---------------------------------------------------------------------------
+# Shared hotel data fixtures — injected directly into test functions
+# ---------------------------------------------------------------------------
+
 @pytest.fixture
 def hotel_a():
     return {
@@ -44,6 +48,7 @@ def hotel_c():
 
 @pytest.fixture
 def base_state(hotel_a):
+    """Minimal valid AgentState seeded with one hotel and one human message."""
     from langchain_core.messages import HumanMessage
     return {
         "messages": [HumanMessage(content="Find hotels near Fisherman's Wharf")],
@@ -57,3 +62,13 @@ def base_state(hotel_a):
         "react_iterations": 0,
         "error": None,
     }
+
+
+# ---------------------------------------------------------------------------
+# Module-scoped LangChain import fixture — avoids repeated module-level init
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def human_message_cls():
+    from langchain_core.messages import HumanMessage
+    return HumanMessage
