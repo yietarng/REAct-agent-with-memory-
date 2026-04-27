@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Env
+.env
+
+# Database
+*.db
+
+# Pytest
+.pytest_cache/
+
+# Distribution
+*.egg-info/
+dist/
+build/
